@@ -20,11 +20,12 @@ public class CoolWeatherDB {
 	/**
 	 * 数据库版本
 	 */
-	public static final int VERSION =1;
+	public static final int VERSION =2;
 	
 	private static  CoolWeatherDB coolWeatherDB;
 	private SQLiteDatabase db;
 	
+	//构造函数使用数据库帮助类  创建数据库的实例
 	private CoolWeatherDB(Context context) {
 		CoolWeatherOpenHelper dbHelper=new CoolWeatherOpenHelper(context,DB_NAME,null,VERSION);
 		db=dbHelper.getWritableDatabase();
@@ -42,6 +43,7 @@ public class CoolWeatherDB {
 		if(province !=null){
 			ContentValues values=new ContentValues();
 			values.put("province_name", province.getProvinceName());
+			values.put("province_pyname", province.getProvincePyName());
 			values.put("province_code", province.getProvinceCode());
 			db.insert("Province", null, values);
 		}
@@ -56,6 +58,7 @@ public class CoolWeatherDB {
 				Province province=new Province();
 				province.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				province.setProvinceName(cursor.getString(cursor.getColumnIndex("province_name")));
+				province.setProvincePyName(cursor.getString(cursor.getColumnIndex("province_pyname")));
 				province.setProvinceCode(cursor.getString(cursor.getColumnIndex("province_code")));
 				list.add(province);
 			}while(cursor.moveToNext());	
@@ -67,6 +70,7 @@ public class CoolWeatherDB {
 		if(city !=null){
 			ContentValues values=new ContentValues();
 			values.put("city_name", city.getCityName());
+			values.put("city_pyname", city.getCityPyName());
 			values.put("city_code", city.getCityCode());
 			values.put("province_id", city.getProvinceId());
 			db.insert("City", null, values);	
@@ -81,6 +85,7 @@ public class CoolWeatherDB {
 				City city=new City();
 				city.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				city.setCityName(cursor.getString(cursor.getColumnIndex("city_name")));
+				city.setCityPyName(cursor.getString(cursor.getColumnIndex("city_pyname")));
 				city.setCityCode(cursor.getString(cursor.getColumnIndex("city_code")));
 				city.setProvinceId(provinceId);
 				list.add(city);
